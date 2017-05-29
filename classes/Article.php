@@ -35,82 +35,112 @@ class Article
 	}
 
 	public static function getById($id) {
-		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$conn->exec("SET NAMES 'utf8'");
-		$sql = "SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles WHERE id = :id";
-		$st = $conn->prepare( $sql );
-		$st->bindValue( ":id", $id, PDO::PARAM_INT );
-		$st->execute();
-		$row = $st->fetch();
-		$conn = null;
-		if ( $row ) return new Article( $row );
+		try {
+			$pdo = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+			$pdo->exec("SET NAMES 'utf8'");
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$sql = "SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles WHERE id = :id";
+			$st = $pdo->prepare( $sql );
+			$st->bindValue( ":id", $id, PDO::PARAM_INT );
+			$st->execute();
+			$row = $st->fetch();
+			$pdo = null;
+		} catch (PDOException $e) {
+			echo 'Ошибка в Article::getById($id)';
+			error_log($e->getMessage());
+		}
+		if ($row) return new Article($row);
 	}
 
 	public static function getList($numRows=1000000, $order="publicationDate DESC") {
-		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$conn->exec("SET NAMES 'utf8'");
-		$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
-						ORDER BY " . $conn->quote($order) . " LIMIT :numRows";
+		try {
+			$pdo = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+			$pdo->exec("SET NAMES 'utf8'");
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
+							ORDER BY " . $pdo->quote($order) . " LIMIT :numRows";
 
-		$st = $conn->prepare($sql);
-		$st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
-		$st->execute();
-		$list = array();
+			$st = $pdo->prepare($sql);
+			$st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
+			$st->execute();
+			$list = array();
 
-		while ($row = $st->fetch()) {
-			$article = new Article($row);
-			$list[] = $article;
+			while ($row = $st->fetch()) {
+				$article = new Article($row);
+				$list[] = $article;
+			}
+
+			$sql = "SELECT FOUND_ROWS() AS totalRows";
+			$totalRows = $pdo->query($sql)->fetch();
+			$pdo = null;
+		} catch (PDOException $e) {
+			echo 'Ошибка в Article::getList($numRows, $order)';
+			error_log($e->getMessage());
 		}
-
-		$sql = "SELECT FOUND_ROWS() AS totalRows";
-		$totalRows = $conn->query( $sql )->fetch();
-		$conn = null;
-		return ( array ( "results" => $list, "totalRows" => $totalRows[0] ) );
+		return (array("results" => $list, "totalRows" => $totalRows[0]));
 	}
 
 	public function insert() {
 		if (!is_null( $this->id))
 			trigger_error ("Article::insert(): Попытка вставить статью, у которой есть идентификатор ($this->id).", E_USER_ERROR);
-
-		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$conn->exec("SET NAMES 'utf8'");
-		$sql = "INSERT INTO articles (publicationDate, title, summary, content) VALUES (FROM_UNIXTIME(:publicationDate), :title, :summary, :content)";
-		$st = $conn->prepare ($sql);
-		$st->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
-		$st->bindValue(":title", $this->title, PDO::PARAM_STR);
-		$st->bindValue(":summary", $this->summary, PDO::PARAM_STR);
-		$st->bindValue(":content", $this->content, PDO::PARAM_STR);
-		$st->execute();
-		$this->id = $conn->lastInsertId();
-		$conn = null;
+		try {
+			$pdo = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+			$pdo->exec("SET NAMES 'utf8'");
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$sql = "INSERT INTO articles (publicationDate, title, summary, content) VALUES (FROM_UNIXTIME(:publicationDate), :title, :summary, :content)";
+			$st = $pdo->prepare ($sql);
+			$st->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
+			$st->bindValue(":title", $this->title, PDO::PARAM_STR);
+			$st->bindValue(":summary", $this->summary, PDO::PARAM_STR);
+			$st->bindValue(":content", $this->content, PDO::PARAM_STR);
+			$st->execute();
+			$this->id = $pdo->lastInsertId();
+			$pdo = null;
+		} catch (PDOException $e) {
+			echo 'Ошибка в Article::insert()';
+			error_log($e->getMessage());
+		}
 	}
 
 	public function update() {
 		if (is_null($this->id))
 			trigger_error("Article::update(): Попытка обновить статью, у которой нет идентификатора.", E_USER_ERROR);
 
-		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$conn->exec("SET NAMES 'utf8'");
-		$sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id";
-		$st = $conn->prepare ($sql);
-		$st->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
-		$st->bindValue(":title", $this->title, PDO::PARAM_STR);
-		$st->bindValue(":summary", $this->summary, PDO::PARAM_STR);
-		$st->bindValue(":content", $this->content, PDO::PARAM_STR);
-		$st->bindValue(":id", $this->id, PDO::PARAM_INT);
-		$st->execute();
-		$conn = null;
+		try {
+			$pdo = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+			$pdo->exec("SET NAMES 'utf8'");
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id";
+			$st = $pdo->prepare ($sql);
+			$st->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
+			$st->bindValue(":title", $this->title, PDO::PARAM_STR);
+			$st->bindValue(":summary", $this->summary, PDO::PARAM_STR);
+			$st->bindValue(":content", $this->content, PDO::PARAM_STR);
+			$st->bindValue(":id", $this->id, PDO::PARAM_INT);
+			$st->execute();
+			$pdo = null;
+		} catch (PDOException $e) {
+			echo 'Ошибка в Article::update()';
+			error_log($e->getMessage());
+		}
 	}
 
 	public function delete() {
 		if (is_null($this->id))
 			trigger_error ("Article::delete(): Попытка удалить статью, у которой нет идентификатора.", E_USER_ERROR);
-		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-		$conn->exec("SET NAMES 'utf8'");
-		$st = $conn->prepare ( "DELETE FROM articles WHERE id = :id LIMIT 1" );
-		$st->bindValue( ":id", $this->id, PDO::PARAM_INT );
-		$st->execute();
-		$conn = null;
+
+		try {
+			$pdo = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
+			$pdo->exec("SET NAMES 'utf8'");
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$st = $pdo->prepare ( "DELETE FROM articles WHERE id = :id LIMIT 1" );
+			$st->bindValue( ":id", $this->id, PDO::PARAM_INT );
+			$st->execute();
+			$pdo = null;
+		} catch (PDOException $e) {
+			echo 'Ошибка в Article::delete()';
+			error_log($e->getMessage());
+		}
 	}
 
 }
