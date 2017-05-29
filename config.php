@@ -1,8 +1,7 @@
 <?php
 ini_set( "display_errors", true );
 date_default_timezone_set( "Europe/Kiev" );
-define("DB_DSN", "mysql:host=localhost;dbname=widgetBlogDB");
-//define("DB_CHARSET", array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
+define("DB_DSN", "mysql:host=localhost;dbname=widgetBlogDB;charset=UTF8");
 define("DB_USERNAME", "user_widgetBlogDB");
 define("DB_PASSWORD", "user_password");
 define("CLASS_PATH", "classes");

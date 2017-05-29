@@ -37,7 +37,6 @@ class Article
 	public static function getById($id) {
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 		$conn->exec("SET NAMES 'utf8'");
-
 		$sql = "SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles WHERE id = :id";
 		$st = $conn->prepare( $sql );
 		$st->bindValue( ":id", $id, PDO::PARAM_INT );
@@ -50,7 +49,6 @@ class Article
 	public static function getList($numRows=1000000, $order="publicationDate DESC") {
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 		$conn->exec("SET NAMES 'utf8'");
-
 		$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
 						ORDER BY " . $conn->quote($order) . " LIMIT :numRows";
 
@@ -72,11 +70,10 @@ class Article
 
 	public function insert() {
 		if (!is_null( $this->id))
-			trigger_error ("Article::insert(): Attempt to insert an Article object that already has its ID property set (to $this->id).", E_USER_ERROR);
+			trigger_error ("Article::insert(): Попытка вставить статью, у которой есть идентификатор ($this->id).", E_USER_ERROR);
 
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 		$conn->exec("SET NAMES 'utf8'");
-
 		$sql = "INSERT INTO articles (publicationDate, title, summary, content) VALUES (FROM_UNIXTIME(:publicationDate), :title, :summary, :content)";
 		$st = $conn->prepare ($sql);
 		$st->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
@@ -90,7 +87,7 @@ class Article
 
 	public function update() {
 		if (is_null($this->id))
-			trigger_error("Article::update(): Attempt to update an Article object that does not have its ID property set.", E_USER_ERROR);
+			trigger_error("Article::update(): Попытка обновить статью, у которой нет идентификатора.", E_USER_ERROR);
 
 		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 		$conn->exec("SET NAMES 'utf8'");
@@ -107,8 +104,8 @@ class Article
 
 	public function delete() {
 		if (is_null($this->id))
-			trigger_error ("Article::delete(): Attempt to delete an Article object that does not have its ID property set.", E_USER_ERROR);
-		$conn = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
+			trigger_error ("Article::delete(): Попытка удалить статью, у которой нет идентификатора.", E_USER_ERROR);
+		$conn = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
 		$conn->exec("SET NAMES 'utf8'");
 		$st = $conn->prepare ( "DELETE FROM articles WHERE id = :id LIMIT 1" );
 		$st->bindValue( ":id", $this->id, PDO::PARAM_INT );
