@@ -1,25 +1,22 @@
-<?php include "templates/include/header.php" ?>
+<?php
+	include "templates/include/header.php";
+	include "templates/include/htmlout.inc.php";
+?>
 
-      <h1>Article Archive</h1>
+			<h1>Статьи</h1>
 
-      <ul id="headlines" class="archive">
-
-<?php foreach ( $results['articles'] as $article ) { ?>
-
-        <li>
-          <h2>
-            <span class="pubDate"><?php echo date('j F Y', $article->publicationDate)?></span><a href=".?action=viewArticle&amp;articleId=<?php echo $article->id?>"><?php echo htmlspecialchars( $article->title )?></a>
-          </h2>
-          <p class="summary"><?php echo htmlspecialchars( $article->summary )?></p>
-        </li>
-
+			<ul id="headlines" class="archive">
+<?php foreach ($results['articles'] as $article) { ?>
+				<li>
+					<h2>
+						<span class="pubDate"><?php echo date('j F Y', $article->publicationDate)?></span><a href=".?action=viewArticle&amp;articleId=<?php echo $article->id?>"><?php echo htmlout($article->title)?></a>
+					</h2>
+					<p class="summary"><?php echo htmlout($article->summary)?></p>
+				</li>
 <?php } ?>
+			</ul>
 
-      </ul>
-
-      <p><?php echo $results['totalRows']?> article<?php echo ( $results['totalRows'] != 1 ) ? 's' : '' ?> in total.</p>
-
-      <p><a href="./">Return to Homepage</a></p>
+			<p>Количество статей: <?php echo $results['totalRows']?></p>
+			<p><a href="./">Вернуться на Главную</a></p>
 
 <?php include "templates/include/footer.php" ?>
-
