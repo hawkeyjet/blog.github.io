@@ -14,9 +14,9 @@ class Article
 		if (isset( $data['publicationDate']))
 			$this->publicationDate = (int)$data['publicationDate'];
 		if (isset($data['title']))
-			$this->title = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['title']);
+			$this->title = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9а-яА-Я]()/u", "", $data['title']);
 		if (isset($data['summary']))
-			$this->summary = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9()]/", "", $data['summary']);
+			$this->summary = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9а-яА-Я]()]/u", "", $data['summary']);
 		if (isset( $data['content']))
 			$this->content = $data['content'];
 	}
@@ -88,7 +88,7 @@ class Article
 			$pdo->exec("SET NAMES 'utf8'");
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			$sql = "INSERT INTO articles (publicationDate, title, summary, content) VALUES (FROM_UNIXTIME(:publicationDate), :title, :summary, :content)";
-			$s = $pdo->prepare ($sql);
+			$s = $pdo->prepare($sql);
 			$s->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
 			$s->bindValue(":title", $this->title, PDO::PARAM_STR);
 			$s->bindValue(":summary", $this->summary, PDO::PARAM_STR);
