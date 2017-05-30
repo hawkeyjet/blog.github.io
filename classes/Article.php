@@ -36,9 +36,7 @@ class Article
 
 	public static function getById($id) {
 		try {
-			$pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
-			$pdo->exec("SET NAMES 'utf8'");
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			include TEMPLATE_PATH . "/include/db.inc.php";
 			$sql = "SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles WHERE id = :id";
 			$s = $pdo->prepare( $sql );
 			$s->bindValue( ":id", $id, PDO::PARAM_INT );
@@ -54,9 +52,7 @@ class Article
 
 	public static function getList($numRows=1000000, $order="publicationDate DESC") {
 		try {
-			$pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
-			$pdo->exec("SET NAMES 'utf8'");
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			include TEMPLATE_PATH . "/include/db.inc.php";
 			$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
 							ORDER BY " . $pdo->quote($order) . " LIMIT :numRows";
 
@@ -84,9 +80,7 @@ class Article
 		if (!is_null( $this->id))
 			trigger_error ("Article::insert(): Попытка вставить статью, у которой есть идентификатор ($this->id).", E_USER_ERROR);
 		try {
-			$pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
-			$pdo->exec("SET NAMES 'utf8'");
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			include TEMPLATE_PATH . "/include/db.inc.php";
 			$sql = "INSERT INTO articles (publicationDate, title, summary, content) VALUES (FROM_UNIXTIME(:publicationDate), :title, :summary, :content)";
 			$s = $pdo->prepare($sql);
 			$s->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
@@ -107,9 +101,7 @@ class Article
 			trigger_error("Article::update(): Попытка обновить статью, у которой нет идентификатора.", E_USER_ERROR);
 
 		try {
-			$pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
-			$pdo->exec("SET NAMES 'utf8'");
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			include TEMPLATE_PATH . "/include/db.inc.php";
 			$sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content WHERE id = :id";
 			$s = $pdo->prepare ($sql);
 			$s->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
@@ -130,9 +122,7 @@ class Article
 			trigger_error ("Article::delete(): Попытка удалить статью, у которой нет идентификатора.", E_USER_ERROR);
 
 		try {
-			$pdo = new PDO(DB_DSN, DB_USER, DB_PASS);
-			$pdo->exec("SET NAMES 'utf8'");
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			include TEMPLATE_PATH . "/include/db.inc.php";
 			$s = $pdo->prepare ( "DELETE FROM articles WHERE id = :id LIMIT 1" );
 			$s->bindValue( ":id", $this->id, PDO::PARAM_INT );
 			$s->execute();
