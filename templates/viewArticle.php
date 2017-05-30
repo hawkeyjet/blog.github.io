@@ -1,7 +1,4 @@
-<?php
-	include "templates/include/header.php";
-	include "templates/include/htmlout.inc.php";
-?>
+<?php include "templates/include/header.php" ?>
 
 			<h1 style="width: 75%;"><?php echo htmlout($results['article']->title)?></h1>
 			<div style="width: 75%; font-style: italic;"><?php echo htmlout($results['article']->summary)?></div>

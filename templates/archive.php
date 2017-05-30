@@ -1,7 +1,4 @@
-<?php
-	include "templates/include/header.php";
-	include "templates/include/htmlout.inc.php";
-?>
+<?php include "templates/include/header.php" ?>
 
 			<h1>Статьи</h1>
 

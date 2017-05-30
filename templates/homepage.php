@@ -1,7 +1,4 @@
-<?php
-	include "templates/include/header.php";
-	include "templates/include/htmlout.inc.php";
-?>
+<?php include "templates/include/header.php" ?>
 
 			<ul id="headlines">
 <?php foreach ($results['articles'] as $article) { ?>
