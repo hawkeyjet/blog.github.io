@@ -29,6 +29,10 @@
 						<label for="content">Содержание</label>
 						<textarea name="content" id="content" placeholder="HTML содержание статьи" required maxlength="100000" style="height: 30em;"><?php echo htmlout($results['article']->content)?></textarea>
 					</li>
+					<script src="ckeditor/ckeditor.js"></script>
+					<script>
+						CKEDITOR.replace('content');
+					</script>
 
 					<li>
 						<label for="publicationDate">Дата публикации</label>

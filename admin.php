@@ -121,12 +121,12 @@ function listArticles() {
 	$results['totalRows'] = $data['totalRows'];
 	$results['pageTitle'] = "Все статьи";
 
-	if (isset( $_GET['error'])) {
+	if (isset($_GET['error'])) {
 		if ($_GET['error'] == "articleNotFound")
 			$results['errorMessage'] = "Ошибка: Статья не найдена.";
 	}
 
-	if (isset( $_GET['status'])) {
+	if (isset($_GET['status'])) {
 		if ($_GET['status'] == "changesSaved")
 			$results['statusMessage'] = "Ваши изменения сохранены.";
 		if ($_GET['status'] == "articleDeleted")

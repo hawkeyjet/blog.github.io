@@ -2,7 +2,7 @@
 require "config.php";
 $action = isset($_GET['action']) ? $_GET['action'] : "";
 
-switch ( $action ) {
+switch ($action) {
 	case 'archive':
 		archive();
 		break;

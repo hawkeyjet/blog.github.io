@@ -38,7 +38,7 @@ class Article
 		try {
 			include TEMPLATE_PATH . "/include/db.inc.php";
 			$sql = "SELECT *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles WHERE id = :id";
-			$s = $pdo->prepare( $sql );
+			$s = $pdo->prepare($sql);
 			$s->bindValue( ":id", $id, PDO::PARAM_INT );
 			$s->execute();
 			$row = $s->fetch();
