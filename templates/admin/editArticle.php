@@ -27,11 +27,17 @@
 
 					<li>
 						<label for="content">Содержание</label>
-						<textarea name="content" id="content" placeholder="HTML содержание статьи" required maxlength="100000" style="height: 30em;"><?php echo htmlout($results['article']->content)?></textarea>
+						<textarea name="content" id="content" placeholder="HTML содержание статьи" maxlength="100000" style="height: 30em;"><?php echo htmlout($results['article']->content)?></textarea>
 					</li>
-					<script src="ckeditor/ckeditor.js"></script>
+
+					<script src="tinymce/tinymce.min.js"></script>
 					<script>
-						CKEDITOR.replace('content');
+						tinymce.init({
+							selector: 'textarea#content',
+							branding: false,
+							language: 'ru',
+							plugins: 'advlist, anchor, autolink, autoresize, autosave, charmap, code, codesample, colorpicker, contextmenu, directionality, fullscreen, help, hr, image, imagetools, importcss, insertdatetime, legacyoutput, link, lists, media, nonbreaking, noneditable, pagebreak, paste, preview, print, save, searchreplace, tabfocus, table, template, textcolor, textpattern, toc, visualblocks, visualchars, wordcount'
+							})
 					</script>
 
 					<li>

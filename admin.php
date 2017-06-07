@@ -62,15 +62,15 @@ function newArticle() {
 	$results['pageTitle'] = "Новая статья";
 	$results['formAction'] = "newArticle";
 
-	if (isset( $_POST['saveChanges'])) {
+	if (isset($_POST['saveChanges'])) {
 
 		$article = new Article;
 		$article->storeFormValues($_POST);
 		$article->insert();
 		header("Location: admin.php?status=changesSaved");
 
-	} elseif ( isset( $_POST['cancel'] ) ) {
-		header( "Location: admin.php" );
+	} elseif (isset($_POST['cancel'])) {
+		header("Location: admin.php");
 
 	} else {
 		$results['article'] = new Article;
