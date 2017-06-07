@@ -9,8 +9,8 @@ class Article
 	public $content = null;
 
 	public function __construct($data=array()) {
-		if (isset( $data['id']))
-			$this->id = (int) $data['id'];
+		if (isset($data['id']))
+			$this->id = (int)$data['id'];
 		if (isset( $data['publicationDate']))
 			$this->publicationDate = (int)$data['publicationDate'];
 		if (isset($data['title']))
