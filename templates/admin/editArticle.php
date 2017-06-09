@@ -7,7 +7,7 @@
 
 			<h1><?php echo $results['pageTitle']?></h1>
 
-			<form action="admin.php?action=<?php echo $results['formAction']?>" method="post">
+			<form action="admin.php?action=<?php echo $results['formAction']?>" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="articleId" value="<?php echo $results['article']->id ?>"/>
 
 <?php if (isset($results['errorMessage'])) { ?>
@@ -44,6 +44,23 @@
 						<label for="publicationDate">Дата публикации</label>
 						<input type="date" name="publicationDate" id="publicationDate" placeholder="YYYY-MM-DD" required maxlength="10" value="<?php echo $results['article']->publicationDate ? date("Y-m-d", $results['article']->publicationDate) : "" ?>" />
 					</li>
+
+<?php if ($results['article'] && $imagePath = $results['article']->getImagePath()) { ?>
+					<li>
+						<label>Текущее изображение</label>
+						<img id="articleImage" src="<?php echo $imagePath ?>" alt="Article Image" />
+					</li>
+
+					<li>
+						<label for="deleteImage">Удалить</label><input type="checkbox" name="deleteImage" id="deleteImage" value="yes" />
+					</li>
+<?php } ?>
+
+					<li>
+						<label for="image">Новое изображение</label>
+						<input type="file" name="image" id="image" placeholder="Выберите изображение для загрузки" maxlength="255" />
+					</li>
+
 				</ul>
 
 				<div class="buttons">

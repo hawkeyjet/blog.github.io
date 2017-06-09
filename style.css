@@ -65,6 +65,7 @@ h2 a {
 
 #headlines li {
   margin-bottom: 2em;
+  overflow: hidden;
 }
 
 .pubDate {
@@ -84,12 +85,29 @@ h2 a {
   width: 130px;
 }
 
+#headlines .articleImageThumb {
+  width: 120px;
+  float: left;
+  margin: 4px 20px 0 0;
+  border: 1px solid #00a0b0;
+}
+
 .summary {
   padding-left: 100px;
 }
 
 #headlines.archive .summary {
   padding-left: 130px;
+}
+
+
+/* Article pages */
+
+#articleImageFullsize {
+  width: 250px;
+  float: left;
+  margin: 4px 20px 10px 0;
+  border: 1px solid #00a0b0;
 }
 
 
@@ -113,7 +131,7 @@ form {
   background: #fff4cf;
   border: 1px solid #666;
   -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;  
+  -webkit-border-radius: 5px;
   border-radius: 5px;
   -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
   -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
@@ -127,6 +145,7 @@ form ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 form ul li {
@@ -164,13 +183,20 @@ input, select, textarea {
 input, textarea, .date {
   border: 2px solid #666;
   -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;    
+  -webkit-border-radius: 5px;
   border-radius: 5px;
   background: #fff;
 }
 
 input {
   font-size: .9em;
+}
+
+input[type="checkbox"] {
+  display: inline-block;
+  padding: 0;
+  margin: 0 0 .8em 0;
+  width: auto;
 }
 
 select {
@@ -190,7 +216,24 @@ textarea {
 textarea#content {
   font-family: "Courier New", courier, fixed;
 }
-  
+
+#articleImage {
+  border: 2px solid #666;
+}
+
+#deleteImage {
+  clear: both;
+}
+
+label[for="deleteImage"] {
+  float: none;
+  display: inline;
+}
+
+input[type="file"] {
+  float: left;
+}
+
 
 /* Place a border around focused fields */
 
@@ -221,7 +264,7 @@ input[type="submit"] {
   padding: 10px;
   border: 2px solid #7c412b;
   -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;  
+  -webkit-border-radius: 5px;
   border-radius: 5px;
   -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
   -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
@@ -293,7 +336,7 @@ tr:hover {
   margin: 2em 0;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  border-radius: 5px; 
+  border-radius: 5px;
   -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
   -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
   -box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
@@ -311,3 +354,23 @@ tr:hover {
   color: #fff;
 }
 
+
+/* Header/footer boxes */
+
+.wideBox {
+  clear: both;
+  text-align: center;
+  margin: 30px auto;
+  padding: 10px;
+  background: #9cd5dc;
+  border: 1px solid #333;
+  line-height: 80%;
+  width: 980px;
+}
+
+.wideBox h1 {
+  font-weight: bold;
+  margin: 20px;
+  color: #666;
+  font-size: 1.5em;
+}

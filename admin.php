@@ -67,6 +67,10 @@ function newArticle() {
 		$article = new Article;
 		$article->storeFormValues($_POST);
 		$article->insert();
+
+		if (isset($_FILES['image']))
+			$article->storeUploadedImage($_FILES['image']);
+
 		header("Location: admin.php?status=changesSaved");
 
 	} elseif (isset($_POST['cancel'])) {
@@ -91,7 +95,15 @@ function editArticle() {
 		}
 
 		$article->storeFormValues($_POST);
+
+		if (isset($_POST['deleteImage']) && $_POST['deleteImage'] == "yes")
+			$article->deleteImages();
+
 		$article->update();
+
+		if (isset($_FILES['image']))
+			$article->storeUploadedImage($_FILES['image']);
+
 		header("Location: admin.php?status=changesSaved");
 
 	} else if (isset($_POST['cancel'])) {
@@ -109,6 +121,7 @@ function deleteArticle() {
 		header("Location: admin.php?error=articleNotFound");
 		return;
 	}
+	$article->deleteImages();
 	$article->delete();
 	header("Location: admin.php?status=articleDeleted");
 }

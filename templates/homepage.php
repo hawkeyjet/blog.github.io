@@ -6,7 +6,12 @@
 					<h2>
 						<span class="pubDate"><?php echo date('j F', $article->publicationDate)?></span><a href=".?action=viewArticle&amp;articleId=<?php echo $article->id?>"><?php echo htmlout($article->title)?></a>
 					</h2>
-					<p class="summary"><?php echo htmlout($article->summary)?></p>
+					<p class="summary">
+						<?php if ($imagePath = $article->getImagePath(IMG_TYPE_THUMB)) { ?>
+							<a href=".?action=viewArticle&amp;articleId=<?php echo $article->id?>"><img class="articleImageThumb" src="<?php echo $imagePath?>" alt="Эскиз записи" /></a>
+						<?php } ?>
+					<?php echo htmlout($article->summary)?>
+					</p>
 				</li>
 <?php } ?>
 			</ul>
