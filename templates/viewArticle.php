@@ -8,9 +8,12 @@
 			<?php } ?>
 			<?php echo $results['article']->content?>
 			</div>
-			<p class="pubDate">Опубликовано <?php echo date('j F Y', $results['article']->publicationDate)?></p>
+			<p class="pubDate">Опубликовано <?php echo date('j F Y', $results['article']->publicationDate)?>
+<?php if ($results['category']) { ?>
+				в категории: <a href="./?action=archive&amp;categoryId=<?php echo $results['category']->id?>"><?php echo htmlout($results['category']->name) ?></a>
+<?php } ?>
+			</p>
 
 			<p><a href="./">Вернутся на Главную</a></p>
 
 <?php include "templates/include/footer.php" ?>
-

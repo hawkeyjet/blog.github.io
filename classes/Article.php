@@ -4,6 +4,7 @@ class Article
 {
 	public $id = null;
 	public $publicationDate = null;
+	public $categoryId = null;
 	public $title = null;
 	public $summary = null;
 	public $content = null;
@@ -14,10 +15,12 @@ class Article
 			$this->id = (int)$data['id'];
 		if (isset( $data['publicationDate']))
 			$this->publicationDate = (int)$data['publicationDate'];
+		if (isset($data['categoryId']))
+			$this->categoryId = (int)$data['categoryId'];
 		if (isset($data['title']))
-			$this->title = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9а-яА-Я]()/u", "", $data['title']);
+			$this->title = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9а-яА-Я()]/u", "", $data['title']);
 		if (isset($data['summary']))
-			$this->summary = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9а-яА-Я]()]/u", "", $data['summary']);
+			$this->summary = preg_replace("/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9а-яА-Я()]/u", "", $data['summary']);
 		if (isset($data['content']))
 			$this->content = $data['content'];
 		if (isset($data['imageExtension']))
@@ -41,7 +44,7 @@ class Article
 		if ($image['error'] == UPLOAD_ERR_OK) {
 
 			if (is_null($this->id))
-				trigger_error("Article::storeUploadedImage(): Попытка загрузить изображение для статьи, у которой нет идентификатора.", E_USER_ERROR);
+				trigger_error("Article::storeUploadedImage(): Попытка загрузить изображение для записи, у которой нет идентификатора.", E_USER_ERROR);
 
 			$this->deleteImages();
 			$this->imageExtension = strtolower(strrchr($image['name'], '.'));
@@ -129,14 +132,16 @@ class Article
 		if ($row) return new Article($row);
 	}
 
-	public static function getList($numRows=1000000, $order="publicationDate DESC") {
+	public static function getList($numRows=1000000, $categoryId=null, $order="publicationDate DESC") {
 		try {
 			include TEMPLATE_PATH . "/include/db.inc.php";
-			$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles
+			$categoryClause = $categoryId ? "WHERE categoryId = :categoryId" : "";
+			$sql = "SELECT SQL_CALC_FOUND_ROWS *, UNIX_TIMESTAMP(publicationDate) AS publicationDate FROM articles $categoryClause
 							ORDER BY " . $pdo->quote($order) . " LIMIT :numRows";
 
 			$s = $pdo->prepare($sql);
 			$s->bindValue(":numRows", $numRows, PDO::PARAM_INT);
+			if ($categoryId) $s->bindValue(":categoryId", $categoryId, PDO::PARAM_INT);
 			$s->execute();
 			$list = array();
 
@@ -157,12 +162,13 @@ class Article
 
 	public function insert() {
 		if (!is_null( $this->id))
-			trigger_error ("Article::insert(): Попытка вставить статью, у которой есть идентификатор ($this->id).", E_USER_ERROR);
+			trigger_error ("Article::insert(): Попытка вставить запись, у которой есть идентификатор ($this->id).", E_USER_ERROR);
 		try {
 			include TEMPLATE_PATH . "/include/db.inc.php";
-			$sql = "INSERT INTO articles (publicationDate, title, summary, content, imageExtension) VALUES (FROM_UNIXTIME(:publicationDate), :title, :summary, :content, :imageExtension)";
+			$sql = "INSERT INTO articles (publicationDate, categoryId, title, summary, content, imageExtension ) VALUES (FROM_UNIXTIME(:publicationDate), :categoryId, :title, :summary, :content, :imageExtension)";
 			$s = $pdo->prepare($sql);
 			$s->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
+			$s->bindValue(":categoryId", $this->categoryId, PDO::PARAM_INT);
 			$s->bindValue(":title", $this->title, PDO::PARAM_STR);
 			$s->bindValue(":summary", $this->summary, PDO::PARAM_STR);
 			$s->bindValue(":content", $this->content, PDO::PARAM_STR);
@@ -178,13 +184,15 @@ class Article
 
 	public function update() {
 		if (is_null($this->id))
-			trigger_error("Article::update(): Попытка обновить статью, у которой нет идентификатора.", E_USER_ERROR);
+			trigger_error("Article::update(): Попытка обновить запись, у которой нет идентификатора.", E_USER_ERROR);
 
 		try {
 			include TEMPLATE_PATH . "/include/db.inc.php";
-			$sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), title=:title, summary=:summary, content=:content, imageExtension=:imageExtension WHERE id = :id";
+			$sql = "UPDATE articles SET publicationDate=FROM_UNIXTIME(:publicationDate), categoryId=:categoryId, title=:title, summary=:summary, content=:content, imageExtension=:imageExtension WHERE id = :id";
+
 			$s = $pdo->prepare ($sql);
 			$s->bindValue(":publicationDate", $this->publicationDate, PDO::PARAM_INT);
+			$s->bindValue(":categoryId", $this->categoryId, PDO::PARAM_INT);
 			$s->bindValue(":title", $this->title, PDO::PARAM_STR);
 			$s->bindValue(":summary", $this->summary, PDO::PARAM_STR);
 			$s->bindValue(":content", $this->content, PDO::PARAM_STR);
@@ -200,7 +208,7 @@ class Article
 
 	public function delete() {
 		if (is_null($this->id))
-			trigger_error ("Article::delete(): Попытка удалить статью, у которой нет идентификатора.", E_USER_ERROR);
+			trigger_error ("Article::delete(): Попытка удалить запись, у которой нет идентификатора.", E_USER_ERROR);
 
 		try {
 			include TEMPLATE_PATH . "/include/db.inc.php";

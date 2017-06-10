@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", true);
+ini_set("display_errors", false);
 date_default_timezone_set( "Europe/Kiev" );
 define("DB_DSN", "mysql:host=localhost;dbname=widgetBlogDB;charset=UTF8");
 define("DB_USER", "user_widgetBlogDB");
@@ -15,3 +15,4 @@ define("IMG_TYPE_THUMB", "thumb");
 define("ARTICLE_THUMB_WIDTH", 120);
 define("JPEG_QUALITY", 85);
 require CLASS_PATH . "/Article.php";
+require CLASS_PATH . "/Category.php";

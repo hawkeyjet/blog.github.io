@@ -1,11 +1,7 @@
 <?php include "templates/include/header.php" ?>
+<?php include "templates/admin/include/header.php" ?>
 
-			<div id="adminHeader">
-				<h2>Блог (Администратор)</h2>
-				<p>Вы вошли как <b><?php echo htmlout($_SESSION['username'])?></b>. <a href="admin.php?action=logout"?>Выйти</a></p>
-			</div>
-
-			<h1>Все статьи</h1>
+			<h1>Все записи</h1>
 
 <?php if (isset( $results['errorMessage'])) { ?>
 				<div class="errorMessage"><?php echo $results['errorMessage'] ?></div>
@@ -20,6 +16,7 @@
 				<tr>
 					<th>Дата публикации</th>
 					<th>Статья</th>
+					<th>Категория</th>
 				</tr>
 
 <?php foreach ($results['articles'] as $article) { ?>
@@ -28,14 +25,17 @@
 					<td>
 						<?php echo $article->title?>
 					</td>
+					<td>
+						<?php echo $results['categories'][$article->categoryId]->name?>
+					</td>
 				</tr>
 <?php } ?>
 
 			</table>
 
-			<p>Количество статей: <?php echo $results['totalRows']?></p>
+			<p>Количество записей: <?php echo $results['totalRows']?></p>
 
-			<p><a href="admin.php?action=newArticle">Добавить новую статью</a></p>
+			<p><a href="admin.php?action=newArticle">Добавить новую запись</a></p>
 
 <?php include "templates/include/footer.php" ?>
 
