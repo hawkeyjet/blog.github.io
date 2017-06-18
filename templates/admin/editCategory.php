@@ -3,30 +3,33 @@
 
 			<h1><?php echo $results['pageTitle']?></h1>
 
-			<form action="admin.php?action=<?php echo $results['formAction']?>" method="post">
+			<form class="form-horizontal" role="form" action="admin.php?action=<?php echo $results['formAction']?>" method="post">
 				<input type="hidden" name="categoryId" value="<?php echo $results['category']->id ?>"/>
 
 <?php if (isset($results['errorMessage'])) { ?>
 				<div class="errorMessage"><?php echo $results['errorMessage'] ?></div>
 <?php } ?>
 
-				<ul>
+					<div class="form-group">
+						<label for="name" class="col-sm-2 control-label">Название категории</label>
+						<div class="col-sm-10">
+							<input type="text" name="name" id="name" class="form-control" placeholder="Название категории" required autofocus maxlength="255" value="<?php echo htmlout($results['category']->name)?>" />
+						</div>
+					</div>
 
-					<li>
-						<label for="name">Название категории</label>
-						<input type="text" name="name" id="name" placeholder="Название категории" required autofocus maxlength="255" value="<?php echo htmlout($results['category']->name)?>" />
-					</li>
-
-					<li>
-						<label for="description">Описание</label>
-						<textarea name="description" id="description" placeholder="Краткое описание категории" required maxlength="1000" style="height: 5em;"><?php echo htmlout($results['category']->description)?></textarea>
-					</li>
+					<div class="form-group">
+						<label for="description" class="col-sm-2 control-label">Описание</label>
+						<div class="col-sm-10">
+							<textarea name="description" id="description" class="form-control" placeholder="Краткое описание категории" required maxlength="1000" style="height: 5em;"><?php echo htmlout($results['category']->description)?></textarea>
+						</div>
+					</div>
 
 				</ul>
-
-				<div class="buttons">
-					<input type="submit" name="saveChanges" value="Save Changes" />
-					<input type="submit" formnovalidate name="cancel" value="Cancel" />
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<input type="submit" name="saveChanges" class="btn btn-default" value="Сохранить" />
+						<input type="submit" formnovalidate name="cancel" class="btn btn-default" value="Отменить" />
+					</div>
 				</div>
 
 			</form>

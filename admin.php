@@ -173,7 +173,7 @@ function listCategories() {
 	$data = Category::getList();
 	$results['categories'] = $data['results'];
 	$results['totalRows'] = $data['totalRows'];
-	$results['pageTitle'] = "Article Categories";
+	$results['pageTitle'] = "Категории";
 
 	if (isset( $_GET['error'])) {
 		if ($_GET['error'] == "categoryNotFound")

@@ -12,7 +12,7 @@
 				<div class="statusMessage"><?php echo $results['statusMessage'] ?></div>
 <?php } ?>
 
-			<table>
+			<table class="table table-hover">
 				<tr>
 					<th>Категория</th>
 				</tr>

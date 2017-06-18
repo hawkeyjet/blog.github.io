@@ -1,19 +1,36 @@
 <?php include "templates/include/header.php" ?>
 
-			<h1 style="width: 75%;"><?php echo htmlout($results['article']->title)?></h1>
-			<div style="width: 75%; font-style: italic;"><?php echo htmlout($results['article']->summary)?></div>
-			<div style="width: 75%; min-height: 300px;">
-			<?php if ($imagePath = $results['article']->getImagePath()) { ?>
-				<img id="articleImageFullsize" src="<?php echo $imagePath?>" alt="Article Image" />
-			<?php } ?>
-			<?php echo $results['article']->content?>
-			</div>
-			<p class="pubDate">Опубликовано <?php echo date('j F Y', $results['article']->publicationDate)?>
-<?php if ($results['category']) { ?>
-				в категории: <a href="./?action=archive&amp;categoryId=<?php echo $results['category']->id?>"><?php echo htmlout($results['category']->name) ?></a>
-<?php } ?>
-			</p>
+			<div class="row">
+				<div class="col-sm-8 blog-main">
+					<div class="blog-header">
+							<h1 class="blog-post-title">
+								<?php echo htmlout($results['article']->title)?>
+							</h1>
+							<div class="description" style="font-style: italic;">
+								<?php echo htmlout($results['article']->summary)?>
+							</div>
 
-			<p><a href="./">Вернутся на Главную</a></p>
+							<div class="content">
+							<?php if ($imagePath = $results['article']->getImagePath()) { ?>
+								<img id="articleImageFullsize" class="img-responsive" src="<?php echo $imagePath?>" alt="Article Image" />
+							<?php } ?>
+								<?php echo $results['article']->content?>
+							</div>
+
+							<p class="pubDate">Опубликовано <?php echo date('j F Y', $results['article']->publicationDate)?>
+							<?php if ($results['category']) { ?>
+									в категории: <a href="./?action=archive&amp;categoryId=<?php echo $results['category']->id?>"><?php echo htmlout($results['category']->name) ?></a>
+							<?php } ?>
+							</p>
+					</div>
+
+					<nav aria-label="back">
+						<ul class="pager">
+							<li class="previous"><a href="?action=archive"><span aria-hidden="true">&larr;</span>Показать все записи</a></li>
+						</ul>
+
+
+				</div>
+			</div>
 
 <?php include "templates/include/footer.php" ?>

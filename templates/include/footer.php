@@ -1,7 +1,10 @@
-			<div id="footer">
-				Виджет Блог &copy; <?php echo date('Y') ?>. <a href="admin.php">Вход Администратора</a>
-			</div>
-
+	</div>
+		<div class="container-fluid">
+			<footer class="blog-footer">
+				<p>Виджет Блог &copy; <?php echo date('Y') ?></p>
+					<a href="#">Вверх</a>
+		</footer>
 		</div>
+
 	</body>
 </html>

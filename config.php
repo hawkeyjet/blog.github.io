@@ -1,5 +1,5 @@
 <?php
-ini_set("display_errors", false);
+ini_set("display_errors", true);
 date_default_timezone_set( "Europe/Kiev" );
 define("DB_DSN", "mysql:host=localhost;dbname=widgetBlogDB;charset=UTF8");
 define("DB_USER", "user_widgetBlogDB");

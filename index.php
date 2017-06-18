@@ -24,7 +24,7 @@ function archive() {
 	$results['categories'] = array();
 	foreach ($data['results'] as $category)
 		$results['categories'][$category->id] = $category;
-	$results['pageHeading'] = $results['category'] ?  $results['category']->name : "Записи";
+	$results['pageHeading'] = $results['category'] ?  $results['category']->name : "Все записи";
 	$results['pageTitle'] = $results['pageHeading'] . " | Блог";
 	require TEMPLATE_PATH . "/archive.php";
 }
@@ -38,6 +38,12 @@ function viewArticle() {
 	$results['article'] = Article::getById((int)$_GET["articleId"]);
 	$results['category'] = Category::getById($results['article']->categoryId);
 	$results['pageTitle'] = $results['article']->title . " | Блог";
+
+	$data = Category::getList();
+	$results['categories'] = array();
+	foreach ($data['results'] as $category)
+		$results['categories'][$category->id] = $category;
+
 	require TEMPLATE_PATH . "/viewArticle.php";
 }
 
@@ -48,7 +54,8 @@ function homepage() {
 	$results['totalRows'] = $data['totalRows'];
 	$data = Category::getList();
 	$results['categories'] = array();
-	foreach ($data['results'] as $category) $results['categories'][$category->id] = $category;
+	foreach ($data['results'] as $category)
+		$results['categories'][$category->id] = $category;
 	$results['pageTitle'] = "Блог";
 	require TEMPLATE_PATH . "/homepage.php";
 }

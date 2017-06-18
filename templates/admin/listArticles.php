@@ -12,7 +12,8 @@
 				<div class="statusMessage"><?php echo $results['statusMessage'] ?></div>
 <?php } ?>
 
-			<table>
+		<div class="table-responsive">
+			<table class="table table-hover">
 				<tr>
 					<th>Дата публикации</th>
 					<th>Статья</th>
@@ -32,6 +33,8 @@
 <?php } ?>
 
 			</table>
+		</div>
+
 
 			<p>Количество записей: <?php echo $results['totalRows']?></p>
 
